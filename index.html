@@ -37,10 +37,80 @@
             --accent-dim: rgba(25, 40, 127, 0.2);
             --accent-glow: rgba(25, 40, 127, 0.08);
             --accent-bright: #6b7fd4;
+            --logo-fill: currentColor;
             --heading: 'Outfit', 'Helvetica Neue', sans-serif;
             --serif: 'DM Serif Display', Georgia, serif;
             --sans: 'IBM Plex Sans', -apple-system, sans-serif;
             --mono: 'IBM Plex Mono', 'SF Mono', monospace;
+        }
+
+        [data-theme="light"] {
+            --bg-deep: #f2f1ed;
+            --bg-surface: #ffffff;
+            --bg-elevated: #f7f6f3;
+            --border: #ddd9d1;
+            --border-light: #ccc7be;
+            --text-primary: #1a1a2e;
+            --text-secondary: #4a4a5a;
+            --text-muted: #7a7a8a;
+            --accent: #19287f;
+            --accent-light: #19287f;
+            --accent-dim: rgba(25, 40, 127, 0.08);
+            --accent-glow: rgba(25, 40, 127, 0.04);
+            --accent-bright: #19287f;
+        }
+
+        /* ── Theme toggle ── */
+        .theme-toggle {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 100;
+            background: none;
+            border: 1px solid var(--border-light);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            transition: color 0.3s, border-color 0.3s, background 0.3s;
+        }
+
+        .theme-toggle:hover {
+            color: var(--text-primary);
+            border-color: var(--text-muted);
+            background: var(--bg-surface);
+        }
+
+        .theme-toggle .icon-sun,
+        .theme-toggle .icon-moon {
+            width: 18px;
+            height: 18px;
+            position: absolute;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .theme-toggle .icon-sun {
+            opacity: 0;
+            transform: rotate(-90deg) scale(0.7);
+        }
+
+        .theme-toggle .icon-moon {
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+        }
+
+        [data-theme="light"] .theme-toggle .icon-sun {
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+        }
+
+        [data-theme="light"] .theme-toggle .icon-moon {
+            opacity: 0;
+            transform: rotate(90deg) scale(0.7);
         }
 
         html {
@@ -53,6 +123,7 @@
             font-weight: 300;
             color: var(--text-primary);
             background: var(--bg-deep);
+            transition: background 0.4s, color 0.4s;
             line-height: 1.7;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -141,6 +212,7 @@
 
         .hero-logo svg path {
             fill: var(--text-primary);
+            transition: fill 0.4s;
         }
 
         .hero h1 {
@@ -497,13 +569,27 @@
 </head>
 <body>
 
+    <!-- Theme toggle -->
+    <button class="theme-toggle" aria-label="Toggle light/dark mode">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+    </button>
+
     <!-- Hero -->
     <section class="hero">
         <div class="hero-content">
             <div class="hero-logo">
                 <svg width="60" height="78" viewBox="0 0 60 78" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M34 17H25.8691L58.8232 60.2773L57.874 61H60V78H0V61H34.085L0.579102 17H0V0H34V17Z" fill="#19287F"/>
-                    <path d="M0.736816 21.5L19 44.5L0.736816 59V21.5Z" fill="#19287F"/>
+                    <path d="M34 17H25.8691L58.8232 60.2773L57.874 61H60V78H0V61H34.085L0.579102 17H0V0H34V17Z" fill="currentColor"/>
+                    <path d="M0.736816 21.5L19 44.5L0.736816 59V21.5Z" fill="currentColor"/>
                 </svg>
                 <h1>Spectus</h1>
             </div>
@@ -605,5 +691,17 @@
         </div>
     </footer>
 
+    <script>
+        const toggle = document.querySelector('.theme-toggle');
+        const root = document.documentElement;
+        const saved = localStorage.getItem('theme');
+        if (saved) root.setAttribute('data-theme', saved);
+
+        toggle.addEventListener('click', () => {
+            const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            root.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        });
+    </script>
 </body>
 </html>
