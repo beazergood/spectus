@@ -45,7 +45,7 @@ Single-page website for **Spectus Energy Ltd**, a combustion engineering company
 ## Content Source
 
 Original website content was retrieved from the Wayback Machine:
-https://web.archive.org/web/20160208072354/http://spectusenergy.com/
+https://web.archive.org/web/20141218092737/http://spectusenergy.com/
 
 We have artistic freedom on design and content. Not all original content needs to be preserved — the site is deliberately pared back.
 
